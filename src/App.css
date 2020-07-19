@@ -1,3 +1,22 @@
+html{
+  height:100%;
+}
+
+body {
+  background: #fffbd5; 
+  background: -webkit-linear-gradient(to bottom, #b20a2c, #fffbd5);  
+  background: linear-gradient(to bottom, #b20a2c, #fffbd5); 
+  background-repeat: no-repeat; 
+  height: 100%; 
+}
+
+.Footer{
+  position: absolute; 
+  bottom: 0;
+  left: 0; 
+  width: 100%;
+}
+
 .App {
   text-align: center;
 }

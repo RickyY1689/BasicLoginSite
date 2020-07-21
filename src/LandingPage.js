@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import { Button, Box, Grid} from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import './App.css';
 import InfoForm from './InfoForm'
 
-const styles = () => ({
+const useStyles = () => ({
     container: {
         display: 'flex',
         flexDirection: 'column',
@@ -14,32 +14,27 @@ const styles = () => ({
     },
 });
 
-class LandingPage extends Component {
-    state = {
-        characters: [],
-    };
+const LandingPage = () => {
+    const classes = useStyles();
+    const [characters, setCharacters] = useState(0);
 
-    handleSubmit = (character) => {
+    const handleSubmit = (character) => {
         console.log(character);
-        console.log(this.state.characters);
-        this.setState({characters: [...this.state.characters, character]}, () => 
-        console.log(this.state.characters));
+        console.log(characters);
+        setCharacters(character);
     }
     
-    render() {
-        const classes = styles();
-        return(
-            <Grid container spacing={3}>
-                <Grid item xs={3}/>
-                <Grid item xs={6}>
-                    <Box py={5} mt={10} bgcolor='white' className={classes.container}>
-                        <InfoForm handleSubmit={this.handleSubmit}/>
-                    </Box>
-                </Grid>
-                <Grid item xs={3}/>
+    return(
+        <Grid container spacing={3}>
+            <Grid item xs={3}/>
+            <Grid item xs={6}>
+                <Box py={5} mt={10} className={classes.container}>
+                    <InfoForm handleSubmit={handleSubmit}/>
+                </Box>
             </Grid>
-        );
-    }
+            <Grid item xs={3}/>
+        </Grid>
+    );
 }
 
-export default withStyles(styles)(LandingPage);
+export default LandingPage;

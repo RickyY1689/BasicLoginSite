@@ -1,11 +1,11 @@
 
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import { TextField, Box, Button} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import {Link} from 'react-router-dom'
 import './App.css';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = (theme) => ({
     forms: {
         '& .MuiTextField-root': {
             margin: theme.spacing(1),
@@ -37,10 +37,11 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 25,
         backgroundColor: 'white',
     },
-}));
+});
 
 const InfoForm = (props) => {
-    const classes = useStyles();
+    const { name, password, number, helperText } = this.state;
+    const {classes} = useStyles();
 
     const [userInfo, setUserInfo] = useState([{
         name: '',
@@ -51,13 +52,13 @@ const InfoForm = (props) => {
 
     const handleChange = (event) => {
         const {name, value} = event.target;
-            setUserInfo({
+            this.setUserInfo({
                 [name]: value,
             });
     }
     
     const submitForm = () => {
-        console.log(userInfo);
+        console.log(userInfo)
         props.handleSubmit(userInfo);
         setUserInfo({
             name: '',
@@ -65,7 +66,7 @@ const InfoForm = (props) => {
             number: '',
             helperText: 'Default Value!',
         });
-        console.log("here");
+        console.log("here")
     }
     
       
@@ -90,7 +91,7 @@ const InfoForm = (props) => {
                         label="Name"
                         type="Name"
                         name="name"
-                        value={userInfo.name}
+                        value={name}
                         variant="outlined"
                         onChange={handleChange}
                         />
@@ -98,7 +99,7 @@ const InfoForm = (props) => {
                         id="outlined-password-input"
                         label="Password"
                         type="password"
-                        value={userInfo.password}
+                        value={password}
                         name="password"
                         autoComplete="current-password"
                         variant="outlined"
@@ -113,7 +114,7 @@ const InfoForm = (props) => {
                             shrink: true,
                         }}
                         variant="outlined"
-                        value={userInfo.number}
+                        value={number}
                         onChange={handleChange}
                         />
                         <TextField
@@ -123,7 +124,7 @@ const InfoForm = (props) => {
                         defaultValue="Default Value"
                         helperText="Some important text"
                         variant="outlined"
-                        value={userInfo.helperText}
+                        value={helperText}
                         onChange={handleChange}
                         />
                     </div>
@@ -131,7 +132,7 @@ const InfoForm = (props) => {
             </Box>  
             <Link className={classes.linkElement} to={{ 
                 pathname: '/About', 
-                state: {name: userInfo.name, password: userInfo.password, number: userInfo.number, helperText: userInfo.helperText}}}>
+                state: {name: name, password :password, number: number, helperText: helperText}}}>
                     <Button className={classes.root} onClick={submitForm}>
                         Log In 
                     </Button>
@@ -140,5 +141,6 @@ const InfoForm = (props) => {
     
     );
 }
+
 
 export default InfoForm;

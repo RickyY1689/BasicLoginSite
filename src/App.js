@@ -3,12 +3,14 @@ import './App.css';
 import {Route, BrowserRouter as Router, Link, Switch} from 'react-router-dom'
 import About from './About'
 import LandingPage from './LandingPage'
+import LoginPage from './LoginPage'
 
 const App = () => {
   return (
     <Router>
       <Switch>
         <Route path="/about" component={About} /> 
+        <Route path="/log-in" component={LoginPage}/>
         <Route path="/" component={LandingPage} />
       </Switch>
     </Router>

@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { TextField, Box, Button} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom';
+import axios from 'axios';
 import './App.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
         height: 48,
         padding: '0 30px',
       },
-    container: {
+    secondaryContainer: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -41,101 +42,100 @@ const useStyles = makeStyles((theme) => ({
 
 const InfoForm = (props) => {
     const classes = useStyles();
+    const history = useHistory();
+    // const [userInfo, setUserInfo] = useState([{
+    //     name: '',
+    //     password: '',
+    //     number: '',
+    //     helperText: 'Default Value!',
+    // }]);
 
-    const [userInfo, setUserInfo] = useState([{
-        name: '',
-        password: '',
-        number: '',
-        helperText: 'Default Value!',
-    }]);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [errorState, setErrorState] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    // const [number, setNumber] = useState('')
+    // const [helperText, setHelperText] = useState('')
 
-    const handleChange = (event) => {
-        const {name, value} = event.target;
-            setUserInfo({
-                [name]: value,
-            });
-    }
+    // const handleChange = (event) => {
+    //     const {name, value} = event.target;
+    //     setUserInfo([
+    //         ...userInfo,
+    //         {
+    //             [name]: value,
+    //         }
+    //       ]);
+    // }
     
     const submitForm = () => {
+        const userInfo = {
+            username: username,
+            password: password,
+        }
         console.log(userInfo);
-        props.handleSubmit(userInfo);
-        setUserInfo({
-            name: '',
-            password: '',
-            number: '',
-            helperText: 'Default Value!',
+        setUsername('')
+        setPassword('')
+        axios.get('http://localhost:5000/account/'+username)
+        .then(res => {
+            console.log('we hooo')
+            console.log(res.data.username)
+            if ((res.data.password) == (password)) {
+                history.push({
+                    pathname: '/about',
+                    state: {name: username, password: password}
+                })
+            }
+        })
+        .catch(err => {
+            console.log("we have uh oh" + err)
+            setErrorState(true)
+            setErrorMessage("This Username Already Exists")
         });
-        console.log("here");
+        // setNumber('')
+        // setHelperText('')
     }
     
       
     return (
-        <Box py={10} className={classes.container}>
-            <Box pl={20}>
+        <Box py={10} className={classes.secondaryContainer}>
+            <Box className='App'>
                 <form className={classes.forms} noValidate autoComplete="off">
-                    {/* <div>
-                        <TextField required id="standard-required" label="Required" defaultValue="Hello World" />
-                        <TextField
-                        id="standard-number"
-                        label="Number"
-                        type="number"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        />
-                    </div> */}
                     <div>
                         <TextField
+                        error={errorState}
+                        helperText={errorMessage}
                         id="outlined-required"
-                        label="Name"
+                        label="Username"
                         type="Name"
-                        name="name"
-                        value={userInfo.name}
+                        name="Username"
+                        value={username}
                         variant="outlined"
-                        onChange={handleChange}
+                        onChange={event => setUsername(event.target.value)}
                         />
                         <TextField
                         id="outlined-password-input"
                         label="Password"
                         type="password"
-                        value={userInfo.password}
+                        value={password}
                         name="password"
                         autoComplete="current-password"
                         variant="outlined"
-                        onChange={handleChange}
-                        />
-                        <TextField
-                        id="outlined-number"
-                        label="Number"
-                        type="number"
-                        name="number"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        variant="outlined"
-                        value={userInfo.number}
-                        onChange={handleChange}
-                        />
-                        <TextField
-                        id="outlined-helperText"
-                        label="Helper text"
-                        name="helperText"
-                        defaultValue="Default Value"
-                        helperText="Some important text"
-                        variant="outlined"
-                        value={userInfo.helperText}
-                        onChange={handleChange}
+                        onChange={event => setPassword(event.target.value)}
                         />
                     </div>
                 </form> 
             </Box>  
-            <Link className={classes.linkElement} to={{ 
+            {/* <Link className={classes.linkElement} to={{ 
                 pathname: '/About', 
-                state: {name: userInfo.name, password: userInfo.password, number: userInfo.number, helperText: userInfo.helperText}}}>
+                state: {name: username, password: password, number: number, helperText: helperText}}}> */}
                     <Button className={classes.root} onClick={submitForm}>
-                        Log In 
+                        Log In
                     </Button>
-            </Link>
+            {/* </Link> */}
+            <Box className='App' m={3}>
+                Don't have an account? <br/>
+                Create one <Link to="/">Here</Link>    
+            </Box>
         </Box>
     
     );

@@ -3,8 +3,8 @@ import Header from './Header';
 
 
 const About = (props) => {
-    const {name, password, number, helperText} = props.location.state
-    console.log(name, password, number, helperText)
+    const {name, password} = props.location.state
+    console.log(name, password)
   return (
     <Header data={name}/> 
   );

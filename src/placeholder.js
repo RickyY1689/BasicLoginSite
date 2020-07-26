@@ -1,11 +1,13 @@
 
+
+
 import React, { Component } from 'react';
 import { TextField, Box, Button} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import {Link} from 'react-router-dom'
 import './App.css';
 
-const useStyles = (theme) => ({
+const styles = theme => ({
     forms: {
         '& .MuiTextField-root': {
             margin: theme.spacing(1),
@@ -39,108 +41,106 @@ const useStyles = (theme) => ({
     },
 });
 
-const InfoForm = (props) => {
-    const { name, password, number, helperText } = this.state;
-    const {classes} = useStyles();
-
-    const [userInfo, setUserInfo] = useState([{
+class InfoForm extends Component {
+    initialState = {
         name: '',
         password: '',
         number: '',
         helperText: 'Default Value!',
-    }]);
+      }
+    
+    state = this.initialState
 
-    const handleChange = (event) => {
+    handleChange = (event) => {
         const {name, value} = event.target;
-            this.setUserInfo({
+            this.setState({
                 [name]: value,
             });
     }
     
-    const submitForm = () => {
-        console.log(userInfo)
-        props.handleSubmit(userInfo);
-        setUserInfo({
-            name: '',
-            password: '',
-            number: '',
-            helperText: 'Default Value!',
-        });
+    submitForm = () => {
+        console.log(this.state)
+        this.props.handleSubmit(this.state);
+        this.setState(this.initialState);
         console.log("here")
     }
     
-      
-    return (
-        <Box py={10} className={classes.container}>
-            <Box pl={20}>
-                <form className={classes.forms} noValidate autoComplete="off">
-                    {/* <div>
-                        <TextField required id="standard-required" label="Required" defaultValue="Hello World" />
-                        <TextField
-                        id="standard-number"
-                        label="Number"
-                        type="number"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        />
-                    </div> */}
-                    <div>
-                        <TextField
-                        id="outlined-required"
-                        label="Name"
-                        type="Name"
-                        name="name"
-                        value={name}
-                        variant="outlined"
-                        onChange={handleChange}
-                        />
-                        <TextField
-                        id="outlined-password-input"
-                        label="Password"
-                        type="password"
-                        value={password}
-                        name="password"
-                        autoComplete="current-password"
-                        variant="outlined"
-                        onChange={handleChange}
-                        />
-                        <TextField
-                        id="outlined-number"
-                        label="Number"
-                        type="number"
-                        name="number"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        variant="outlined"
-                        value={number}
-                        onChange={handleChange}
-                        />
-                        <TextField
-                        id="outlined-helperText"
-                        label="Helper text"
-                        name="helperText"
-                        defaultValue="Default Value"
-                        helperText="Some important text"
-                        variant="outlined"
-                        value={helperText}
-                        onChange={handleChange}
-                        />
-                    </div>
-                </form> 
-            </Box>  
-            <Link className={classes.linkElement} to={{ 
-                pathname: '/About', 
-                state: {name: name, password :password, number: number, helperText: helperText}}}>
-                    <Button className={classes.root} onClick={submitForm}>
-                        Log In 
-                    </Button>
-            </Link>
-        </Box>
+    render() {
+        const { name, password, number, helperText } = this.state;
+        const {classes} = this.props;
+        return (
+            <Box py={10} className={classes.container}>
+                <Box pl={20}>
+                    <form className={classes.forms} noValidate autoComplete="off">
+                        {/* <div>
+                            <TextField required id="standard-required" label="Required" defaultValue="Hello World" />
+                            <TextField
+                            id="standard-number"
+                            label="Number"
+                            type="number"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            />
+                        </div> */}
+                        <div>
+                            <TextField
+                            id="outlined-required"
+                            label="Name"
+                            type="Name"
+                            name="name"
+                            value={name}
+                            variant="outlined"
+                            onChange={this.handleChange}
+                            />
+                            <TextField
+                            id="outlined-password-input"
+                            label="Password"
+                            type="password"
+                            value={password}
+                            name="password"
+                            autoComplete="current-password"
+                            variant="outlined"
+                            onChange={this.handleChange}
+                            />
+                            <TextField
+                            id="outlined-number"
+                            label="Number"
+                            type="number"
+                            name="number"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            variant="outlined"
+                            value={number}
+                            onChange={this.handleChange}
+                            />
+                            <TextField
+                            id="outlined-helperText"
+                            label="Helper text"
+                            name="helperText"
+                            defaultValue="Default Value"
+                            helperText="Some important text"
+                            variant="outlined"
+                            value={helperText}
+                            onChange={this.handleChange}
+                            />
+                        </div>
+                    </form> 
+                </Box>  
+                <Link className={classes.linkElement} to={{ 
+                    pathname: '/About', 
+                    state: {name: name, password :password, number: number, helperText: helperText}}}>
+                        <Button className={classes.root} onClick={this.submitForm}>
+                            Log In 
+                        </Button>
+                </Link>
+            </Box>
+       
+        );
+    }
     
-    );
 }
 
 
-export default InfoForm;
+export default withStyles(styles, { withTheme: true })(InfoForm);

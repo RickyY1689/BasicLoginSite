@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
         color: 'white',
         height: 48,
         padding: '0 30px',
-      },
+    },
     secondaryContainer: {
         display: 'flex',
         flexDirection: 'column',

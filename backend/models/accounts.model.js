@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { List } = require('@material-ui/core');
 const Schema = mongoose.Schema;
 
 const accountsSchema = new Schema({
@@ -12,6 +13,16 @@ const accountsSchema = new Schema({
     password: {
         type: String,
         required: true,
+        trim: true,
+        minlength: 3
+    },
+    tags: {
+        type: Array,
+        trim: true,
+        minlength: 3
+    },
+    email: {
+        type: String,
         trim: true,
         minlength: 3
     }

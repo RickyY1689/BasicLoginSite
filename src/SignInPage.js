@@ -11,6 +11,7 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 //Currently using this for ease of use (https://betterstack.dev/projects/react-tag-input/)
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css"; 
+import axios from 'axios';
 
 //Can switch to this if we want to add autocomplete suggestions (https://www.npmjs.com/package/react-tag-autocomplete)
 //import ReactTags from 'react-tag-autocomplete'
@@ -90,6 +91,7 @@ const SignUpPage = () => {
         robotic: false, 
         security: false
       });
+    const [summary, setSummary] = useState("")
 
     const [errorStates, setErrorStates] = useState({
         username: false,
@@ -150,8 +152,29 @@ const SignUpPage = () => {
         });
     };
 
-    const handleReset = () => {
-        setActiveStep(0);
+    const handleSubmit = () => {
+        let interests = ["database", "machineLearning", "computerVision", "augmentedReality"
+                        , "blockchain", "virtualReality", "iot", "robotic", "security"]; 
+        for (var i=0; i<interestsChecked.length; i++) {
+            console.log(interestsChecked[i])
+        }
+
+        const userInfo = {
+            username: username,
+            email: email,
+            password: password,
+            usertags: usertags,
+            desiredtags: desiredtags,
+            summary: summary
+        }
+
+        console.log(userInfo);
+        axios.post('http://localhost:5000/account/add', userInfo)
+        .then(res => console.log(res.data))
+        .catch(err => {
+            console.log("we have uh oh")
+        });
+
     };
 
     const { database,machineLearning,computerVision,
@@ -377,6 +400,8 @@ const SignUpPage = () => {
                                 label="Personal Summary"
                                 multiline
                                 rows={4}
+                                value={summary}
+                                onChange={event => setSummary(event.target.value)}
                                 variant="outlined"
                                 />
                         </form>
@@ -416,8 +441,8 @@ const SignUpPage = () => {
                     <Typography className={classes.instructions}>
                     All steps completed - you&apos;re finished
                     </Typography>
-                    <Button onClick={handleReset} className={classes.button}>
-                    Reset
+                    <Button onClick={handleSubmit} className={classes.button}>
+                    Complete
                     </Button>
                 </div>
                 ) : (

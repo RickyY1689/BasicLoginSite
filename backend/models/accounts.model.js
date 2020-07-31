@@ -9,6 +9,11 @@ const accountsSchema = new Schema({
         trim: true,
         minlength: 3,
         unique: true 
+    },    
+    email: {
+        type: String,
+        trim: true,
+        minlength: 3
     },
     password: {
         type: String,
@@ -16,16 +21,24 @@ const accountsSchema = new Schema({
         trim: true,
         minlength: 3
     },
-    tags: {
+    interests: {
+        type: [],
+        required: true, 
+    },
+    tagsAssociated: {
+        type: [String],
+        required: true
+    },
+    tagsDesired: {
         type: Array,
         trim: true,
         minlength: 3
     },
-    email: {
+    summary: {
         type: String,
-        trim: true,
-        minlength: 3
+        reuired: true
     }
+
 }, {
     timestamps: true,
 });

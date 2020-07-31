@@ -18,10 +18,13 @@ router.route('/add').post((req, res) => {
     // Gets the username which we want to add from the req (request) body
     const username = req.body.username;
     const password = req.body.password;
-    const email = "palceholder@gmail.com"; 
-    const tags =["placeholder1", "placeholder2"];
+    const email = req.body.email; 
+    const tagsAssociated = req.body.usertags;
+    const tagsDesired = req.body.desiredtags;
+    const interests = ["interest1", "interest2"];
+    const summary = req.body.summary;
     // Creates a new instance of user with username
-    const newAccount = new Accounts({username, password, email, tags});
+    const newAccount = new Accounts({username, password, email, tagsAssociated, tagsDesired, interests, summary});
 
     // Mongoose method .save() which adds our instance of user into the MongoDB  
     newAccount.save()

@@ -1,6 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+var fs = require('fs'); 
+var path = require('path'); 
+var multer = require('multer'); 
 
 require('dotenv').config(); // Allows us to initialize environment variables in .env files
 
@@ -22,10 +25,14 @@ connection.once('open', () => {
 
 //requiring the files and importing them 
 const accountRouter = require('./routes/account');
-
 //loads everthing in 
 app.use('/account', accountRouter);
 
+//requiring the files and importing them 
+const userInfoRouter = require('./routes/userInfo');
+//loads everthing in 
+app.use('/userInfo', userInfoRouter);
+
 app.listen(port, () => {
-    console.log('Server is running on port: ${port}');
+    console.log(`Server is running on port: ${port}`);
 });

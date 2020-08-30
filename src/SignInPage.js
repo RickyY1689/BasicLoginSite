@@ -3,10 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import { Checkbox, FormGroup, FormHelperText, Button, Typography, Radio, FormControl, FormLabel, RadioGroup, FormControlLabel, Box , TextField} from '@material-ui/core';
+import { Checkbox, FormGroup, FormHelperText, Button, Typography, FormControl, FormLabel, FormControlLabel, Box , TextField} from '@material-ui/core';
 import './App.css';
-import IconButton from '@material-ui/core/IconButton';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
 
 //Currently using this for ease of use (https://betterstack.dev/projects/react-tag-input/)
 import ReactTagInput from "@pathofdev/react-tag-input";
@@ -91,6 +89,9 @@ const SignUpPage = () => {
         robotic: false, 
         security: false
       });
+    const [interests, setInterests] = useState([])
+
+    const [userImage, setUserImage] = useState("")
     const [summary, setSummary] = useState("")
 
     const [errorStates, setErrorStates] = useState({
@@ -107,7 +108,8 @@ const SignUpPage = () => {
 
     const handleChange = event => {
         setInterestsChecked({ ...interestsChecked, [event.target.name]: event.target.checked });
-        };
+        setInterests([...interests, event.target.name])
+    };
 
     const buttonCounterHandle = () => {
         setCounter(counter+1)
@@ -152,27 +154,51 @@ const SignUpPage = () => {
         });
     };
 
+    // const handleSubmit = () => {
+    //     let interests = ["database", "machineLearning", "computerVision", "augmentedReality"
+    //                     , "blockchain", "virtualReality", "iot", "robotic", "security"]; 
+    //     for (var i=0; i<interestsChecked.length; i++) {
+    //         console.log(interestsChecked[i])
+    //     }
+
+    //     const userInfo = {
+    //         username: username,
+    //         email: email,
+    //         password: password,
+    //         usertags: usertags,
+    //         desiredtags: desiredtags,
+    //         summary: summary
+    //     }
+    //     console.log(userInfo)
+    //     axios.post('http://localhost:5000/account/add', userInfo)
+    //     .then(res => console.log(res.data))
+    //     .catch(err => {
+    //         console.log("we have uh oh")
+    //     });
+
+    // };
+
     const handleSubmit = () => {
-        let interests = ["database", "machineLearning", "computerVision", "augmentedReality"
-                        , "blockchain", "virtualReality", "iot", "robotic", "security"]; 
-        for (var i=0; i<interestsChecked.length; i++) {
-            console.log(interestsChecked[i])
-        }
+        const userInfo = new FormData()
+        userInfo.append('username', username)
+        userInfo.append('password', password)
+        userInfo.append('email', email)
+        userInfo.append('usertags', usertags)
+        userInfo.append('desiredtags', desiredtags)
+        userInfo.append('summary', summary)
+        userInfo.append('interests', interests)
+        userInfo.append('img', userImage)
 
-        const userInfo = {
-            username: username,
-            email: email,
-            password: password,
-            usertags: usertags,
-            desiredtags: desiredtags,
-            summary: summary
-        }
-
-        console.log(userInfo);
-        axios.post('http://localhost:5000/account/add', userInfo)
+        console.log(interests)
+        axios({
+            method: 'post',
+            url: 'http://localhost:5000/userInfo/add', 
+            data: userInfo,
+            headers: {'Content-Type': 'multipart/form-data' }
+        })
         .then(res => console.log(res.data))
         .catch(err => {
-            console.log("we have uh oh")
+            console.log("we have uh oh" + err)
         });
 
     };
@@ -381,17 +407,12 @@ const SignUpPage = () => {
                                 id="contained-button-file"
                                 multiple
                                 type="file"
+                                onChange={event => {setUserImage(event.target.files[0])}}
                             />
                             <label htmlFor="contained-button-file">
                                 <Button variant="contained" color="primary" component="span">
                                 Upload a Profile Picture
                                 </Button>
-                            </label>
-                            <input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
-                            <label htmlFor="icon-button-file">
-                                <IconButton color="primary" aria-label="upload picture" component="span">
-                                <PhotoCamera />
-                                </IconButton>
                             </label>
                         </Box>
                         <form className={classes.forms} noValidate autoComplete="off">

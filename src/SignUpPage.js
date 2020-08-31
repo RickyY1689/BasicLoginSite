@@ -10,7 +10,7 @@ import './App.css';
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css"; 
 import axios from 'axios';
-
+import {Link, useHistory} from 'react-router-dom';
 //Can switch to this if we want to add autocomplete suggestions (https://www.npmjs.com/package/react-tag-autocomplete)
 //import ReactTags from 'react-tag-autocomplete'
 
@@ -67,6 +67,7 @@ function getSteps() {
 }
 
 const SignUpPage = () => {
+    const history = useHistory();
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
     const [skipped, setSkipped] = useState(new Set());
@@ -196,7 +197,13 @@ const SignUpPage = () => {
             data: userInfo,
             headers: {'Content-Type': 'multipart/form-data' }
         })
-        .then(res => console.log(res.data))
+        .then(res => {
+            console.log(res.data)
+            history.push({
+                pathname: '/profile',
+                state: {data: username}
+            })
+        })
         .catch(err => {
             console.log("we have uh oh" + err)
         });
@@ -503,4 +510,4 @@ const SignUpPage = () => {
   );
 }
 
-export default SignUpPage
+export default SignUpPage;

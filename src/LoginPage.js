@@ -63,21 +63,21 @@ const LoginPage = () => {
         console.log(userInfo);
         setUsername('')
         setPassword('')
-        axios.get('http://localhost:5000/account/'+username)
+        axios.get('http://localhost:5000/userInfo/'+username)
         .then(res => {
             console.log('we hooo')
             console.log(res.data.username)
             if ((res.data.password) == (password)) {
                 history.push({
-                    pathname: '/about',
-                    state: {name: username, password: password}
+                    pathname: '/profile',
+                    state: {data: username}
                 })
             }
         })
         .catch(err => {
             console.log("we have uh oh" + err)
             setErrorState(true)
-            setErrorMessage("This Username Already Exists")
+            setErrorMessage("Invalid Login Credentials")
         });
     }
 
@@ -119,7 +119,7 @@ const LoginPage = () => {
                             </Button>
                         <Box className='App' m={3}>
                             Don't have an account? <br/>
-                            Create one <Link to="/">Here</Link>    
+                            Create one <Link to="/signup">Here</Link>    
                         </Box>
                     </Box>
                 </Box>
